@@ -2,4 +2,4 @@
 
 Componente para agregar cursos a una lista
 
-[App Add Courses](/app-add-courses.png)
+![App Add Courses](app-add-courses.png)

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Binding</title>
+		<link rel="stylesheet" href="css/bootstrap.min.css" />
+		<script src="js/react.js"></script>
+		<script src="js/react-dom.js"></script>
+		<script src="js/browser.min.js"></script>
+	</head>
+	<body>
+		<div id="container-form" class="col-md-3"></div>
+		<script type="text/babel">
+			var ListaCursos = React.createClass({
+				createElement: function (nombre, index) {
+					return (
+						<li className="ui-state-default" key={index}>
+							<div className="checkbox">
+								<label>
+									<button className="btn btn-danger" onClick={this.props.borrar.bind(null, nombre)}>x</button> {nombre}
+								</label>
+							</div>
+						</li>
+					);
+				},
+				render: function () {
+					return (
+						<ul className="list-unstyled">{this.props.cursos.map(this.createElement)}</ul>
+					);
+				}
+			});
+
+
+
+			var FormularioCursos = React.createClass({
+				getInitialState: function () {
+					return { cursos: ["PHP", "C++", "Java", "C#", "Erlang", "Python"] };
+				},
+				eliminarCurso: function (nombre_curso) {
+					var cursos_temp = this.state.cursos;
+					var index_elem = cursos_temp.indexOf(nombre_curso);
+					cursos_temp.splice(index_elem, 1);
+					this.setState({
+						cursos: cursos_temp
+					});
+				},
+				agregarCurso: function (e) {
+					e.preventDefault();
+					var cursos_temp = this.state.cursos.concat(this.refs.txtCurso.value);
+					this.refs.txtCurso.value = "";
+					this.setState({
+						cursos: cursos_temp
+					});
+				},
+				render: function () {
+					return (
+						<div>
+							<h2>Lista de Cursos:</h2>
+							<form onSubmit={this.agregarCurso}>
+								<input
+									type="text"
+									className="form-control"
+									ref="txtCurso"
+									placeholder="Agregar curso"
+								/>
+								<br/>
+								<button className="btn btn-success">Agregar a Lista de Cursos</button>
+							</form>
+							<hr/>
+							<ListaCursos cursos={this.state.cursos} borrar={this.eliminarCurso}/>
+						</div>
+					);
+				}
+			});
+			ReactDOM.render(<FormularioCursos/>, document.getElementById("container-form"));
+		</script>
+	</body>
+</html>
